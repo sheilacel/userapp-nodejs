@@ -13,7 +13,7 @@ app.use(express.json());
 app.use('/uploads', express.static('uploads'));
 app.set('view engine', 'ejs');
 
-// Konfigurasi Multer untuk upload file
+// Konfigurasi Multer untuk upload file (DINONAKTIFKAN untuk Vercel)
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, 'uploads/');
@@ -58,10 +58,10 @@ app.get('/users', async (req, res) => {
   }
 });
 
-// API: Tambah User Baru
-app.post('/api/users', upload.single('profile_photo'), async (req, res) => {
+// API: Tambah User Baru (TANPA UPLOAD untuk Vercel)
+app.post('/api/users', async (req, res) => {
   const { name, email } = req.body;
-  const profile_photo = req.file ? req.file.filename : null;
+  const profile_photo = null; // Tidak ada upload di Vercel
   
   try {
     const query = 'INSERT INTO users (name, email, profile_photo) VALUES ($1, $2, $3) RETURNING *';
@@ -140,8 +140,13 @@ app.get('/test-db', async (req, res) => {
   }
 });
 
-// Start server
-app.listen(PORT, () => {
-  console.log(`🚀 Server berjalan di http://localhost:${PORT}`);
-  console.log(`📊 Database: ${process.env.DATABASE_URL ? 'Connected' : 'Not configured'}`);
-});
+// Start server (HANYA untuk local development)
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server berjalan di http://localhost:${PORT}`);
+    console.log(`📊 Database: ${process.env.DATABASE_URL ? 'Connected' : 'Not configured'}`);
+  });
+}
+
+// Export untuk Vercel (WAJIB!)
+module.exports = app;
