@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Management - Input Data</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+      font-weight: 600;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="file"] {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus,
+    input[type="email"]:focus {
+      outline: none;
+      border-color: #667eea;
+    }
+    .file-input-wrapper {
+      position: relative;
+      overflow: hidden;
+      display: inline-block;
+      width: 100%;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    .btn-secondary {
+      background: #f0f0f0;
+      color: #333;
+      margin-top: 10px;
+    }
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+    .file-name {
+      margin-top: 5px;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📝 Tambah User Baru</h1>
+    <p class="subtitle">Masukkan data pengguna dan upload foto profil</p>
+    
+    <form action="/api/users" method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="name">Nama Lengkap *</label>
+        <input type="text" id="name" name="name" required placeholder="Contoh: John Doe">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required placeholder="Contoh: john@example.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="profile_photo">Foto Profil (Opsional)</label>
+        <input type="file" id="profile_photo" name="profile_photo" accept="image/*" onchange="showFileName(this)">
+        <div class="file-name" id="file-name"></div>
+      </div>
+      
+      <button type="submit" class="btn btn-primary">💾 Simpan Data</button>
+      <button type="button" class="btn btn-secondary" onclick="location.href='/users'">
+        👥 Lihat Daftar User
+      </button>
+    </form>
+  </div>
+  
+  <script>
+    function showFileName(input) {
+      const fileName = input.files[0]?.name || '';
+      document.getElementById('file-name').textContent = fileName ? `File: ${fileName}` : '';
+    }
+  </script>
+</body>
+</html>
