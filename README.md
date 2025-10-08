@@ -18,11 +18,11 @@ Dilengkapi dengan langkah setup, konfigurasi, dan deployment ke GitHub.
 ### 1.2 Ambil Database URL
 1. Klik service **PostgreSQL** yang baru dibuat  
 2. Buka tab **Variables**  
-3. Salin nilai dari **DATABASE_URL**, contoh:
+3. Salin nilai dari **DATABASE_URL**
+```bash
+contoh:
 postgresql://user:password@host:port/database
-
-yaml
-Salin kode
+```
 4. Simpan URL ini untuk digunakan nanti di file `.env`
 
 ---
@@ -81,7 +81,7 @@ const pool = require('./db');
 require('dotenv').config();
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -139,16 +139,13 @@ node server.js
 ```
 ### 6.2 Akses di Browser
 ```bash
-http://localhost:3000
+http://localhost:8000
 ```
 ### 6.3 Tes Endpoint
-```bash
-GET / → Cek server aktif
+1. GET / → Cek server aktif
+2. GET /test-db → Cek koneksi PostgreSQL
+3. POST /upload → Upload file (gunakan Postman)
 
-GET /test-db → Cek koneksi PostgreSQL
-
-POST /upload → Upload file (gunakan Postman)
-```
 ## 🌐 7. Upload Project ke GitHub
 ### 7.1 Inisialisasi Git
 ```bash
@@ -159,7 +156,7 @@ git commit -m "Initial commit - koneksi PostgreSQL via Railway"
 ### 7.2 Tambahkan Remote dan Push
 ```bash
 git branch -M main
-git remote add origin https://github.com/username/userapp-nodejs.git
+git remote add origin https://github.com/username/namarepo.git
 git push -u origin main
 ```
 Jika muncul error “fetch first”, gunakan:
@@ -168,38 +165,31 @@ Jika muncul error “fetch first”, gunakan:
 git pull origin main --rebase
 git push -u origin main
 ```
+---
+
 ### 🚀 8. Deploy ke Railway
-Login ke https://railway.app
+1. Login ke https://railway.app
+2. Klik New Project → Deploy from GitHub repo
+3. Hubungkan repository yang sudah kamu buat
+4. Tambahkan variable:
+```bash
+DATABASE_URL=(ambil dari PostgreSQL Railway)
+PORT=8000 (yang belum digunakan)
+```
+5. Klik Deploy
+> Railway akan otomatis build dan menjalankan aplikasimu.
 
-Klik New Project → Deploy from GitHub repo
-
-Hubungkan repository yang sudah kamu buat
-
-Tambahkan variable:
-
-DATABASE_URL (ambil dari PostgreSQL Railway)
-
-PORT=3000
-
-Klik Deploy
-
-Railway akan otomatis build dan menjalankan aplikasimu.
-
-### 🌍 9. Akses Hasil Deploy
-Setelah build selesai, buka tab Settings → Generate Domain
-
-Akses aplikasi di URL:
+## 🌍 9. Akses Hasil Deploy
+1. Setelah build selesai, buka tab Settings → Generate Domain
+2. Akses aplikasi di URL:
 https://nama-projek-production.up.railway.app
-Tes koneksi:
-/ → Server aktif
-/test-db → Database terkoneksi
-/upload → Upload file
+3. Tes koneksi: / → Server aktif /test-db → Database terkoneksi /upload → Upload file
 
-### 🧾 10. Update & Redeploy
+## 🧾 10. Update & Redeploy
 Jika kamu melakukan perubahan:
 ```bash
 git add .
 git commit -m "Update fitur"
 git push
 ```
-Railway akan otomatis melakukan redeploy setiap kali ada push ke main branch.
+> Railway akan otomatis melakukan redeploy setiap kali ada push ke main branch.
